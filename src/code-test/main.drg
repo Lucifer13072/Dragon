@@ -1,0 +1,14 @@
+
+a = 5.5
+b = 2
+output(a + b)  
+
+flag = true
+output(flag and (5 > 3))  
+
+output("Строка " + str(10))  
+output("A" * 3) 
+
+output(float(5))   
+output(int("123")) 
+output(bool(""))    
