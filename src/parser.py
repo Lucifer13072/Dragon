@@ -180,15 +180,37 @@ class Parser:
 
     def parse_func_call(self):
         func_name = self.current_token.value
-        self.eat(TOKENS["IDENT"])
-        self.eat(TOKENS["LPAREN"])
+        self.eat(TOKENS["IDENT"])  # Съедаем идентификатор функции
+        self.eat(TOKENS["LPAREN"])  # Съедаем открывающую скобку
+
         args = []
         if self.current_token.type != TOKENS["RPAREN"]:
-            args.append(self.parse_expr())
+            args.append(self.parse_expr())  # Разбираем первый аргумент как выражение
+
             while self.current_token.type == TOKENS["COMMA"]:
-                self.eat(TOKENS["COMMA"])
-                args.append(self.parse_expr())
-        self.eat(TOKENS["RPAREN"])
-        if self.current_token.type == TOKENS["SEMICOLON"]:
-            self.eat(TOKENS["SEMICOLON"])
-        return FuncCall(func_name, args)
+                self.eat(TOKENS["COMMA"])  # Съедаем запятую
+                args.append(self.parse_expr())  # Разбираем следующий аргумент
+
+
+        # Завершаем разбор функции
+        if self.current_token.type != TOKENS["RPAREN"]:
+            raise Exception(f"Ошибка парсинга: ожидалась RPAREN, получено {self.current_token.type} ({self.current_token.value})")
+
+        self.eat(TOKENS["RPAREN"])  # Съедаем закрывающую скобку
+        return FuncCall(func_name, args)  # Возвращаем вызов функции с аргументами
+
+    def parse_block(self):
+        statements = []
+        self.eat(TOKENS["LBRACE"])  # Ожидаем открывающую скобку
+        while self.current_token.type != TOKENS["RBRACE"]:
+            statements.append(self.parse_statement())  # Парсим каждое утверждение в блоке
+        self.eat(TOKENS["RBRACE"])  # Съедаем закрывающую скобку
+        return statements
+    
+    def parse_while_statement(self):
+        self.eat(TOKENS["WHILE"])  # Съедаем токен "while"
+        self.eat(TOKENS["LPAREN"])  # Ожидаем открывающую скобку "("
+        condition = self.parse_expr()  # Парсим условие
+        self.eat(TOKENS["RPAREN"])  # Съедаем закрывающую скобку ")"
+        body = self.parse_block()  # Парсим блок инструкций
+        return WhileStatement(condition, body)

@@ -48,3 +48,8 @@ class IfStatement:
         """
         self.clauses = clauses
         self.else_block = else_block
+
+class WhileStatement:
+    def __init__(self, condition, body):
+        self.condition = condition  # Условие
+        self.body = body

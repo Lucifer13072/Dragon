@@ -28,7 +28,11 @@ TOKENS = {
     "OR": "OR",
     "NOT": "NOT",
     "FLOAT": "FLOAT",
-    "BOOL": "BOOL"
+    "BOOL": "BOOL",
+    "EOF":"EOF",
+    "FUNC":"FUNC",
+    "FOR":"FOR",
+    "WHILE":"WHILE",
 }
 
 # Класс для представления токена
@@ -78,11 +82,15 @@ def tokenize(source):
             continue
         
         # Булевы значения
-        if c in ('t', 'f') and source[i:i+4] in ('true', 'false'):
-            value = source[i:i+4] == 'true'
-            tokens.append(Token(TOKENS["BOOL"], value))
-            i += 4 if value else 5
+        if source[i:i+4] == "true":
+            tokens.append(Token(TOKENS["BOOL"], True))
+            i += 4
             continue
+        elif source[i:i+5] == "false":
+            tokens.append(Token(TOKENS["BOOL"], False))
+            i += 5
+            continue
+        
         # Идентификаторы (также зарезервированные слова, например if, else)
         if c.isalpha() or c == '_':
             ident = c
@@ -190,6 +198,7 @@ def tokenize(source):
                 continue
             else:
                 raise Exception(f"Неизвестный символ: {c}")
+            
         raise Exception(f"Неизвестный символ: {c}")
     tokens.append(Token("EOF", None))
     return tokens

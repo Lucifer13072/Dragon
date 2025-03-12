@@ -3,7 +3,7 @@ from interpret import Interpreter
 from tokens import tokenize
 def main():
 
-    filename = "code-test/main.drg"
+    filename = "src/code-test/main.drg"
     with open(filename, 'r') as f:
         source = f.read()
     tokens = tokenize(source)
@@ -14,3 +14,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
+    

@@ -151,5 +151,11 @@ class Interpreter:
                 return result
             return None
 
+        if isinstance(node, WhileStatement):
+            while self.eval(node.condition):
+                for stmt in node.body:
+                    self.eval(stmt)
+            return None
+        
         else:
             raise RuntimeError(f"Неизвестный тип узла: {type(node)}")
