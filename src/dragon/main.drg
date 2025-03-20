@@ -1,0 +1,8 @@
+x = 42;
+output(x);
+
+y = "Hello, World!";
+output(y);
+
+z = x + 10;
+output(z); 
